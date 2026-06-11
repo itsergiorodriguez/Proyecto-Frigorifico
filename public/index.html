@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sala de Máquinas · Relevamiento de Forzadores</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="loginOverlay" class="login-overlay open">
+  <div class="login-card">
+    <span class="kicker">NH₃ · SALA DE MÁQUINAS</span>
+    <h2>Identificate</h2>
+    <label class="login-label">Compañero
+      <select id="loginNombre"></select>
+    </label>
+    <label class="login-label">PIN
+      <input id="loginPin" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+    </label>
+    <button id="loginBtn" class="btn primario">Ingresar</button>
+    <p id="loginError" class="login-error"></p>
+  </div>
+</div>
+
+<div class="wrap" id="app">
+  <header>
+    <div>
+      <span class="kicker">NH₃ · SALA DE MÁQUINAS</span>
+      <h1>Relevamiento de Forzadores <small>· Cámaras altas 1° piso</small></h1>
+    </div>
+    <div class="op">
+      <span class="sync"><i id="syncDot" class="dot"></i>en vivo</span>
+      <span id="badgeLectura" class="badge-lectura" hidden>SOLO LECTURA</span>
+      <button id="opNombre" class="op-btn" title="Cerrar sesión">sin identificar</button>
+    </div>
+  </header>
+
+  <section class="kpis">
+    <div class="kpi"><b id="kTot">0</b><span>Forzadores</span></div>
+    <div class="kpi rel"><b id="kRel">0</b><span>Relevados</span></div>
+    <div class="kpi ok"><b id="kOk">0</b><span>OK</span></div>
+    <div class="kpi rev"><b id="kRev">0</b><span>Revisar</span></div>
+    <div class="kpi fal"><b id="kFal">0</b><span>Falla</span></div>
+    <div class="kpi pend"><b id="kPend">0</b><span>Pendientes</span></div>
+  </section>
+  <div class="barra-wrap"><i id="barra"></i></div>
+
+  <nav class="toolbar">
+    <div id="filtros" class="filtros">
+      <button data-f="todas" class="act">Todas</button>
+      <button data-f="pend">Pendientes</button>
+      <button data-f="falla">Con falla</button>
+      <button data-f="rev">A revisar</button>
+    </div>
+    <div class="acc">
+      <button id="btnReporte" class="btn primario">Reporte</button>
+      <button id="btnHist" class="btn">Historial</button>
+      <button id="btnAdmin" class="btn" hidden>Administración</button>
+    </div>
+  </nav>
+
+  <p class="ayuda">Tocá un forzador para cambiar su estado: <b>gris</b> sin relevar → <b class="cok">verde girando</b> OK → <b class="crev">ámbar</b> revisar → <b class="cfal">rojo detenido</b> falla. Los cambios se comparten con tus compañeros en vivo.</p>
+
+  <div class="plano-host">
+    <div id="plano"></div>
+  </div>
+
+  <section class="legend">
+    <span><svg class="li" viewBox="-18 -18 36 36"><circle r="13" fill="#1b222b" stroke="#5d6b7a" stroke-width="2"/></svg>Sin relevar</span>
+    <span><svg class="li" viewBox="-18 -18 36 36"><circle r="13" fill="#16241d" stroke="#41d98d" stroke-width="2"/></svg>OK (gira)</span>
+    <span><svg class="li" viewBox="-18 -18 36 36"><circle r="13" fill="#2c2616" stroke="#ffb547" stroke-width="2"/></svg>Revisar</span>
+    <span><svg class="li" viewBox="-18 -18 36 36"><circle r="13" fill="#2c1818" stroke="#ff5c5c" stroke-width="2"/></svg>Falla (detenido)</span>
+  </section>
+
+  <section class="card">
+    <h2>Acciones por cámara</h2>
+    <p class="sub">Para una ronda rápida: marcá toda la cámara OK y después tocá solo las excepciones.</p>
+    <div id="panelCamaras" class="panel-cams"></div>
+  </section>
+</div>
+
+<div id="modal" class="modal">
+  <div class="caja">
+    <h3 id="mTitulo"></h3>
+    <pre id="mTexto"></pre>
+    <div class="modal-btns">
+      <button id="mWA" class="btn primario">WhatsApp</button>
+      <button id="mCopiar" class="btn">Copiar</button>
+      <button id="mCerrar" class="btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modalAdmin" class="modal">
+  <div class="caja">
+    <h3>Administración de compañeros</h3>
+    <table class="admin-table">
+      <thead><tr><th>Nombre</th><th>PIN</th><th>Rol</th><th></th></tr></thead>
+      <tbody id="adminTbody"></tbody>
+    </table>
+    <form id="adminForm" class="admin-form">
+      <input type="hidden" id="adminId">
+      <input id="adminNombre" placeholder="Nombre" autocomplete="off" required>
+      <input id="adminPin" placeholder="PIN" inputmode="numeric" maxlength="4" pattern="\d{4}" autocomplete="off" required>
+      <select id="adminRol">
+        <option value="operador">operador</option>
+        <option value="lectura">lectura</option>
+        <option value="admin">admin</option>
+      </select>
+      <button type="submit" id="adminSubmit" class="btn primario">Agregar</button>
+      <button type="button" id="adminCancelar" class="btn" hidden>Cancelar</button>
+    </form>
+    <p id="adminError" class="login-error"></p>
+    <div class="modal-btns">
+      <button id="adminCerrar" class="btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="plano.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
