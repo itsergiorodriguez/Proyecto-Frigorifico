@@ -12,12 +12,12 @@ function cors(h={}) { return {'Access-Control-Allow-Origin':'*','Access-Control-
 function ok(d,c=200){return{statusCode:c,headers:cors(),body:JSON.stringify(d)};}
 function err(m,c=400){return{statusCode:c,headers:cors(),body:JSON.stringify({error:m})};}
 function parseCookies(h=''){return Object.fromEntries(h.split(';').map(c=>c.trim().split('=').map(s=>s.trim())));}
-function getSession(ev){const c=parseCookies(ev.headers.cookie||ev.headers.Cookie||'');const s=c[COOKIE];return s?sesiones.get(s):null;}
+function getSession(ev){const c=parseCookies(ev.headers.cookie||ev.headersh.Cookie||'');const s=c[COOKIE];return s?sesiones.get(s):null;}
 function rnd(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
 let seeded=false;
 async function seed(){
   if(seeded)return;
-  const{rows}=await pool.query('SELECT COUNT(*) c FROM camaras');
+  const{rows}=await pool.query('SELECT COUNT(*) c FROM }))}))}));camaras');
   if(+rows[0].c>0){seeded=true;return;}
   const{camaras}=expandir();
   for(const c of camaras){
@@ -44,7 +44,7 @@ exports.handler=async function(event){
       if(!ids.length)return ok({camaras:cc});
       const{rows}=await pool.query('SELECT id,estado,operador,nota,actualizado FROM forzadores WHERE id=ANY($1)',[ids]);
       const st=Object.fromEntries(rows.map(r=>[r.id,r]));
-      return ok({camaras:cc.map(c=>({...c,evaporadores:c.evaporadores.map(ev=>({...ev,forzadores:ev.forzadores.map(f=>({...f,...(st[f.id]||{estado:'sin_relevar',operador:null,nota:null})}))}))}))}));
+      return ok({camaras:cc.map(c=>({...c,evaporadores:c.evaporadores.map(ev=>({...ev,forzadores:ev.forzadores.map(f=>({...f,...(st[f.id]||{estado:'sin_relevar',operador:null,nota:null})}))}))}))});
     }
     if(m==='GET'&&p[0]==='estados'){const{rows}=await pool.query('SELECT id,estado,operador,nota,actualizado FROM forzadores');return ok(rows);}
     if(m==='GET'&&p[0]==='historial'){const{rows}=await pool.query('SELECT * FROM historial ORDER BY ts DESC LIMIT $1',[+q.limit||100]);return ok(rows);}
