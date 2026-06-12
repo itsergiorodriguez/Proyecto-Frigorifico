@@ -12,7 +12,7 @@ function cors(h={}) { return {'Access-Control-Allow-Origin':'*','Access-Control-
 function ok(d,c=200){return{statusCode:c,headers:cors(),body:JSON.stringify(d)};}
 function err(m,c=400){return{statusCode:c,headers:cors(),body:JSON.stringify({error:m})};}
 function parseCookies(h=''){return Object.fromEntries(h.split(';').map(c=>c.trim().split('=').map(s=>s.trim())));}
-function getSession(ev){const c=parseCookies(ev.headers.cookie||ev.heahhders.Cookie||'');const s=c[COOKIE];return s?sesiones.get(s):null;}
+function getSession(ev){const c=parseCookies(ev.headers.cookie||ev.headers.Cookie||'');const s=c[COOKIE];return s?sesiones.get(s):null;}
 function rnd(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
 let seeded=false;
 async function seed(){
